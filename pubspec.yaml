@@ -45,6 +45,7 @@ flutter:
 
   assets:
     - assets/images/home_tab.png
-    -  assets/images/tab_logout.png
+    - assets/images/tab_logout.png
     - assets/images/tab_saved.png
     - assets/images/tab_search.png
+    - assets/images/back_arrow.png

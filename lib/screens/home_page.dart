@@ -1,5 +1,8 @@
 import 'package:ecommerce_outlet_app_565/constants.dart';
-import 'package:ecommerce_outlet_app_565/widgets/bottom_tabs.dart';
+import 'package:ecommerce_outlet_app_565/widgets/bottom_tab.dart';
+import 'package:ecommerce_outlet_app_565/tabs/home_tab.dart';
+import 'package:ecommerce_outlet_app_565/tabs/search_tab.dart';
+import 'package:ecommerce_outlet_app_565/tabs/saved_tab.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -39,21 +42,9 @@ class _HomePageState extends State<HomePage> {
                 });
               },
               children: [
-                Container(
-                  child: Center(
-                    child: Text("Home page"),
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: Text("Searc hpage"),
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: Text("Saved Page"),
-                  ),
-                ),
+                HomeTab(),
+                SearchTab(),
+                SaveTab(),
               ],
             ),
           ),
