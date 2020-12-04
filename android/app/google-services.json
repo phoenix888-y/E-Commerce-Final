@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "606788817351",
+    "firebase_url": "https://e-commerce-outlet-4ed81.firebaseio.com",
+    "project_id": "e-commerce-outlet-4ed81",
+    "storage_bucket": "e-commerce-outlet-4ed81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606788817351:android:426861e4a92a7092e989e2",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_outlet_app_565"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606788817351-vvcu3ls13llvtp9t45424jq22m1qbf7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT5rpMJlQZjHtTLH73RPJw5nxrhVgjy6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606788817351-vvcu3ls13llvtp9t45424jq22m1qbf7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
