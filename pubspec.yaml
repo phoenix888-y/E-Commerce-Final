@@ -40,10 +40,11 @@ dev_dependencies:
 
 
 flutter:
-
-
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+
+  assets:
+    - assets/images/home_tab.png
+    -  assets/images/tab_logout.png
+    - assets/images/tab_saved.png
+    - assets/images/tab_search.png
