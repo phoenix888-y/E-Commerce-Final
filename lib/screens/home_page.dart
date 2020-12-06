@@ -1,3 +1,4 @@
+import 'package:ecommerce_outlet_app_565/Services/firebase_services.dart';
 import 'package:ecommerce_outlet_app_565/constants.dart';
 import 'package:ecommerce_outlet_app_565/widgets/bottom_tab.dart';
 import 'package:ecommerce_outlet_app_565/tabs/home_tab.dart';
@@ -12,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FirebaseServices _firebaseServices = FirebaseServices();
+
   PageController _tabsPageController;
   int _selectedTab = 0;
   @override
