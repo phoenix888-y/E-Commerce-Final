@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   // Alert Dialog to display errors
   Future<void> _alertDialogBuilder(String error) async {
     return showDialog(
@@ -32,8 +31,7 @@ class _LoginPageState extends State<LoginPage> {
               )
             ],
           );
-        }
-    );
+        });
   }
 
 // Create a new user account
@@ -42,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _loginEmail, password: _loginPassword);
       return null;
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
@@ -99,74 +97,71 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                top: 24.0
-            ),
-                  child: Text("Welcome User, \nLogin to your Account",
-                    textAlign: TextAlign.center,
-                    style: Constants.bold_heading,
-                  ),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 24.0),
+                child: Text(
+                  "Welcome To Jewel, \nLogin to your Account",
+                  textAlign: TextAlign.center,
+                  style: Constants.bold_heading,
                 ),
-                Column(
-                  children: [
-                    CustomInput(
-                      hintText: "Email...",
-                      onChanged: (value) {
-                        _loginEmail = value;
-                      },
-                      onSubmitted: (value) {
-                        _passwordFocusNode.requestFocus();
-                      },
-                      textInputAction: TextInputAction.next,
-                    ),
-                    CustomInput(
-                      hintText: "Password...",
-                      onChanged: (value) {
-                        _loginPassword = value;
-                      },
-                      focusNode: _passwordFocusNode,
-                      isPasswordField: true,
-                      onSubmitted: (value) {
-                        _submitForm();
-                      },
-                    ),
-                    CustomButton(
-                      text: "Login",
-                      onPressed: () {
-                        _submitForm();
-                      },
-                      isLoading: _loginFormLoading,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16.0,
-                  ),
-                  child: CustomButton(
-                    text: "Create New Account",
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterPage()
-                          ),
-                      );
+              ),
+              Column(
+                children: [
+                  CustomInput(
+                    hintText: "Email...",
+                    onChanged: (value) {
+                      _loginEmail = value;
                     },
-                    outlineButton: true,
+                    onSubmitted: (value) {
+                      _passwordFocusNode.requestFocus();
+                    },
+                    textInputAction: TextInputAction.next,
                   ),
+                  CustomInput(
+                    hintText: "Password...",
+                    onChanged: (value) {
+                      _loginPassword = value;
+                    },
+                    focusNode: _passwordFocusNode,
+                    isPasswordField: true,
+                    onSubmitted: (value) {
+                      _submitForm();
+                    },
+                  ),
+                  CustomButton(
+                    text: "Login",
+                    onPressed: () {
+                      _submitForm();
+                    },
+                    isLoading: _loginFormLoading,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
                 ),
-              ],
-            ),
+                child: CustomButton(
+                  text: "Create New Account",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
+                  outlineButton: true,
+                ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

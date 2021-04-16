@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_outlet_app_565/Services/firebase_services.dart';
 import 'package:ecommerce_outlet_app_565/constants.dart';
+import 'package:ecommerce_outlet_app_565/screens/cart_pagee.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomActionBar extends StatelessWidget {
   final String title;
-  final bool hasBackArrow;
+  final bool hasBackArrrow;
   final bool hasTitle;
   final bool hasBackground;
+
   CustomActionBar(
-      {Key key,
-      this.title,
-      this.hasBackArrow,
-      this.hasTitle,
-      this.hasBackground});
+      {this.title, this.hasBackArrrow, this.hasTitle, this.hasBackground});
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
@@ -24,7 +22,7 @@ class CustomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _hasBackArrow = hasBackArrow ?? false;
+    bool _hasBackArrow = hasBackArrrow ?? false;
     bool _hasTitle = hasTitle ?? true;
     bool _hasBackground = hasBackground ?? true;
 
@@ -75,36 +73,47 @@ class CustomActionBar extends StatelessWidget {
               title ?? "Action Bar",
               style: Constants.bold_heading,
             ),
-          Container(
-            width: 42.0,
-            height: 42.0,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(8.0),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartPage(),
+                  ));
+            },
+            child: Container(
+              width: 42.0,
+              height: 42.0,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              alignment: Alignment.center,
+              child: StreamBuilder(
+                stream: _usersRef
+                    .doc(_firebaseServices.getUserId())
+                    .collection("Cart")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  int _totalItems = 0;
+
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    List _documents = snapshot.data.docs;
+                    _totalItems = _documents.length;
+                  }
+
+                  return Text(
+                    "$_totalItems" ?? "0",
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
             ),
-            alignment: Alignment.center,
-            child: StreamBuilder(
-              stream: _usersRef
-                  .doc(_firebaseServices.getUserId())
-                  .collection("Cart")
-                  .snapshots(),
-              builder: (context, snapShot) {
-                int _totalItems = 0;
-                if (snapShot.connectionState == ConnectionState.active) {
-                  List _documents = snapShot.data.docs;
-                  _totalItems = _documents.length;
-                }
-                return Text(
-                  "$_totalItems" ?? "0",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                );
-              },
-            ),
-          ),
+          )
         ],
       ),
     );

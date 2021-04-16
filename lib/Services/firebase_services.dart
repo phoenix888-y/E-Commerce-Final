@@ -14,4 +14,8 @@ class FirebaseServices {
 
   final CollectionReference usersRef = FirebaseFirestore.instance.collection(
       "Users"); // user-> userID (Document)-> cart -> productID(Document)
+
+  final CollectionReference storesRef =
+      FirebaseFirestore.instance.collection("Stores");
+// This is the beggining of the new code
 }

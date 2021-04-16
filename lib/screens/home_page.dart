@@ -1,5 +1,6 @@
 import 'package:ecommerce_outlet_app_565/Services/firebase_services.dart';
 import 'package:ecommerce_outlet_app_565/constants.dart';
+import 'package:ecommerce_outlet_app_565/tabs/product_tab.dart';
 import 'package:ecommerce_outlet_app_565/widgets/bottom_tab.dart';
 import 'package:ecommerce_outlet_app_565/tabs/home_tab.dart';
 import 'package:ecommerce_outlet_app_565/tabs/search_tab.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   PageController _tabsPageController;
   int _selectedTab = 0;
+
   @override
   void initState() {
     _tabsPageController = PageController();
@@ -26,7 +28,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _tabsPageController.dispose();
-
     super.dispose();
   }
 
@@ -47,19 +48,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 HomeTab(),
                 SearchTab(),
-                SaveTab(),
+                //SaveTab(),
+                ProductTab(),
               ],
             ),
           ),
           BottomTabs(
-              selectedTab: _selectedTab,
-              tabPressed: (num) {
-                setState(() {
-                  _tabsPageController.animateToPage(num,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeOutCubic);
-                });
-              }),
+            selectedTab: _selectedTab,
+            tabPressed: (num) {
+              _tabsPageController.animateToPage(num,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeOutCubic);
+            },
+          ),
         ],
       ),
     );

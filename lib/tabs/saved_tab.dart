@@ -6,17 +6,16 @@ class SaveTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Stack(
-          children: [
-            Center(
-              child: Text("Saved Tab"),
-            ),
-            CustomActionBar(
-              title: "Saved",
-              // hasTitle: false,
-              hasBackArrow: true,
-            ),
-          ],
-        )
-    );
+      children: [
+        Center(
+          child: Text("Saved Tab"),
+        ),
+        CustomActionBar(
+          title: "Saved",
+          // hasTitle: false,
+          hasBackArrrow: true,
+        ),
+      ],
+    ));
   }
 }
