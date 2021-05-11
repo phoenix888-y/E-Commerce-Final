@@ -1,65 +1,88 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_outlet_app_565/Services/firebase_services.dart';
-import 'package:ecommerce_outlet_app_565/constants.dart';
-import 'package:ecommerce_outlet_app_565/tabs/product_tab.dart';
-import 'package:ecommerce_outlet_app_565/widgets/bottom_tab.dart';
-import 'package:ecommerce_outlet_app_565/tabs/home_tab.dart';
-import 'package:ecommerce_outlet_app_565/tabs/search_tab.dart';
-import 'package:ecommerce_outlet_app_565/tabs/saved_tab.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommerce_outlet_app_565/widgets/Product_cart.dart';
+import 'package:ecommerce_outlet_app_565/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+import '../constants.dart';
+
+class SearchTab extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _SearchTabState createState() => _SearchTabState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SearchTabState extends State<SearchTab> {
   FirebaseServices _firebaseServices = FirebaseServices();
-
-  PageController _tabsPageController;
-  int _selectedTab = 4;
-
-  @override
-  void initState() {
-    _tabsPageController = PageController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabsPageController.dispose();
-    super.dispose();
-  }
+  String _searchString = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      child: Stack(
         children: [
-          Expanded(
-            child: PageView(
-              controller: _tabsPageController,
-              onPageChanged: (num) {
+          if (_searchString.isEmpty)
+            Center(
+              child: Container(
+                child: Text(
+                  "Search Results",
+                  style: Constants.regDarkText,
+                ),
+              ),
+            )
+          else
+            FutureBuilder<QuerySnapshot>(
+              future: _firebaseServices.prodductsRef
+                  .orderBy("search_string")
+                  .startAt([_searchString]).endAt(
+                      ["$_searchString\uf8ff"]).get(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Scaffold(
+                    body: Center(
+                      child: Text("Error: ${snapshot.error}"),
+                    ),
+                  );
+                }
+
+                // Collection Data ready to display
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // Display the data inside a list view
+                  return ListView(
+                    padding: EdgeInsets.only(
+                      top: 128.0,
+                      bottom: 12.0,
+                    ),
+                    children: snapshot.data.docs.map((document) {
+                      return ProductCart(
+                        title: document.data()['name'],
+                        imageURL: document.data()['images'][0],
+                        price: "\$${document.data()['price']}",
+                        productID: document.id,
+                      );
+                    }).toList(),
+                  );
+                }
+
+                // Loading State
+                return Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 45.0,
+            ),
+            child: CustomInput(
+              hintText: "Search here...",
+              onSubmitted: (value) {
                 setState(() {
-                  _selectedTab = num;
+                  _searchString = value.toLowerCase();
                 });
               },
-              children: [
-                HomeTab(),
-                SearchTab(),
-                //SaveTab(),
-                ProductTab(),
-              ],
             ),
-          ),
-          BottomTabs(
-            selectedTab: _selectedTab,
-            tabPressed: (num) {
-              _tabsPageController.animateToPage(num,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOutCubic);
-            },
           ),
         ],
       ),

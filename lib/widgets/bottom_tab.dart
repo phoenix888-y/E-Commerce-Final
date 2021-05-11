@@ -43,20 +43,20 @@ class _BottomTabsState extends State<BottomTabs> {
                 widget.tabPressed(1);
               }),
           BottomTabButton(
-              imagePath: "assets/images/home_tab.png",
-              selected: _selectedTab == 4 ? true : false,
-              onPressed: () {
-                widget.tabPressed(4);
-              }),
-          BottomTabButton(
               imagePath: "assets/images/tab_saved.png",
               selected: _selectedTab == 2 ? true : false,
               onPressed: () {
                 widget.tabPressed(2);
               }),
           BottomTabButton(
-              imagePath: "assets/images/tab_logout.png",
+              imagePath: "assets/images/account_info.png",
               selected: _selectedTab == 3 ? true : false,
+              onPressed: () {
+                widget.tabPressed(3);
+              }),
+          BottomTabButton(
+              imagePath: "assets/images/tab_logout.png",
+              selected: _selectedTab == 4 ? true : false,
               onPressed: () {
                 FirebaseAuth.instance.signOut();
               })

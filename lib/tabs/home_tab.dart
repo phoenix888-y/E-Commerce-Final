@@ -29,6 +29,10 @@ class HomeTab extends StatelessWidget {
               // Collection Data ready to display
               if (snapshot.connectionState == ConnectionState.done) {
                 // Display the data inside a list view
+
+                // THIS IS WHY CLICKING ON STORES DOESNT WORK!, WE ARE RETURNING
+                // THE FUNCTION [] WAS CALLED ON NULL TRIED CALLING [](images)
+
                 return ListView(
                   padding: EdgeInsets.only(
                     top: 108.0,

@@ -9,13 +9,23 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../constants.dart';
 import '../widgets/custom_action_bar.dart';
+// new class
 
 class productPage extends StatefulWidget {
-  final String prodcutID;
-  productPage({this.prodcutID});
+  final String prodcutID, search_string, rec_string;
+  //productPage({this.prodcutID});
 
   @override
   _productPageState createState() => _productPageState();
+
+  bool jumpsuit, sport_jacket, rubber_duck, long_shirt;
+
+  //productPage({this.productID});
+  productPage({this.prodcutID, this.search_string, this.rec_string});
+
+  //this.jumpsuit, this.sport_jacket, this.rubber_duck, this.long_shirt, this.prodcutID, {Key key})
+  // : super(key: key);
+
 }
 
 class _productPageState extends State<productPage> {
@@ -32,52 +42,65 @@ class _productPageState extends State<productPage> {
         .set({"size": _selectedProductSize});
   }
 
-  addRec() {
-    print("-> 36");
-
-    _firebaseServices.prodductsRef
+  getRecs() {
+    return _firebaseServices.prodductsRef
         .orderBy("search_string")
         .startAt([_searchString]).endAt(["$_searchString\uf8ff"]).get();
-    builder:
-    (context, snapshot) {
-      if (snapshot.hasError) {
-        print("-> 44");
-        return Scaffold(
-          body: Center(
-            child: Text("Error: ${snapshot.error}"),
-          ),
-        );
-      }
-
-      // Collection Data ready to display
-      if (snapshot.connectionState == ConnectionState.done) {
-        print("-> 54");
-        // Display the data inside a list view
-        return ListView(
-          padding: EdgeInsets.only(
-            top: 128.0,
-            bottom: 12.0,
-          ),
-          children: snapshot.data.docs.map((document) {
-            return ProductCart(
-              title: document.data()['name'],
-              imageURL: document.data()['images'][0],
-              price: "\$${document.data()['price']}",
-              productID: document.id,
-            );
-          }).toList(),
-        );
-      }
-    };
-    // by the end hope to return a list view of filtered items
   }
+
+  Future<QuerySnapshot> process() {
+    print(" call process -> 36");
+
+    bool jumpsuit = widget.jumpsuit;
+    bool sport_jacket = widget.sport_jacket;
+    bool rubber_duck = widget.rubber_duck;
+    bool long_shirt = widget.long_shirt;
+
+    Future<QuerySnapshot> selected;
+    selected = getRecs();
+    // print("jumpsuit == false");
+    // print(jumpsuit == false);
+    // print("sport_jacket == true");
+    // print(sport_jacket == true);
+    // if (jumpsuit == false && sport_jacket == true) {
+    //   selected.add("jUMPSUIT");
+    // }
+    // if (sport_jacket == false && jumpsuit == true) {
+    //   selected.add('Jacket');
+    // }
+    print("selected -> 60");
+    print(selected);
+    //print(selected.length);
+    // List<String> shop1 = ['jUMPSUIT', 'Chocolates', 'Cupcake'];
+    // List<String> shop2 = ['Noodles', 'Tea', 'Sandwich'];
+    // for (int i = 0; i < selected.length; i++) {
+    //   for (int j = 0; j <= 2; j++) {
+    //     if (selected[i] == shop1[j] || selected[i] == shop2[j]) {
+    //       selected.removeAt(i);
+    //     }
+    //   }
+    // }
+    return selected;
+  }
+
+  // by the end hope to return a list view of filtered items
+
+  //create alist of children you want in the scaffold, add the future builder to it when you have it
+  List<Widget> chatScreenWidgets = [];
 
   final SnackBar _snackBar = SnackBar(
     content: Text("Product added to the cart "),
   );
 
+  final SnackBar _RECS = SnackBar(
+    content: Text("Product added to the cart "),
+  );
+
   @override
   Widget build(BuildContext context) {
+    Future<QuerySnapshot> recommended;
+    print("calling process -> 92");
+    recommended = process();
     return Scaffold(
       body: Stack(
         children: [
@@ -235,46 +258,50 @@ class _productPageState extends State<productPage> {
                         right: 24.0,
                       ),
                       child: Text(
-                        "${documentData['name']}" ?? "Product Name",
+                        "${documentData['recom_label']}" ?? "Product Rec",
                         style: Constants.bold_heading,
                       ),
                     ),
                     // Product Recommendation
-
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                await addRec();
-                                Scaffold.of(context).showSnackBar(_snackBar);
-                              },
-                              child: Container(
-                                height: 65.0,
-                                margin: EdgeInsets.only(
-                                  left: 16.0,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Recommendations",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                    FutureBuilder(
+                      future: _firebaseServices.prodductsRef
+                          .doc(widget.prodcutID)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Scaffold(
+                            body: Center(
+                              child: Text("Error: ${snapshot.error}"),
                             ),
-                          )
-                        ],
-                      ),
+                          );
+                        }
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          // firebase document data map
+                          Map<String, dynamic> documentData =
+                              snapshot.data.data();
+                          print("->331");
+                          // list of images
+                          List imageList = documentData['rec_images'];
+                          List productSizes = documentData['recom_labels'];
+
+                          // loop through tables in database
+
+                          return ListView(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.all(0),
+                            children: [
+                              // Product Images
+                              ImageSwipe(
+                                imageList: imageList,
+                              ),
+                            ],
+                          );
+                        }
+                        //loading state
+                        return Container(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     ),
                   ],
                 );

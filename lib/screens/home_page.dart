@@ -1,5 +1,6 @@
 import 'package:ecommerce_outlet_app_565/Services/firebase_services.dart';
 import 'package:ecommerce_outlet_app_565/constants.dart';
+import 'package:ecommerce_outlet_app_565/tabs/filter_tab.dart';
 import 'package:ecommerce_outlet_app_565/tabs/product_tab.dart';
 import 'package:ecommerce_outlet_app_565/widgets/bottom_tab.dart';
 import 'package:ecommerce_outlet_app_565/tabs/home_tab.dart';
@@ -43,6 +44,8 @@ class _HomePageState extends State<HomePage> {
               onPageChanged: (num) {
                 setState(() {
                   _selectedTab = num;
+                  print("num -> 47");
+                  print(num);
                 });
               },
               children: [
@@ -50,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                 SearchTab(),
                 //SaveTab(),
                 ProductTab(),
+                FilterTab(),
               ],
             ),
           ),

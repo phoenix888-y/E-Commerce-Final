@@ -10,30 +10,28 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   // Alert Dialog to display errors
   Future<void> _alertDialogBuilder(String error) async {
     return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-      return AlertDialog(
-        title: Text("Error"),
-        content: Container(
-          child: Text(error),
-        ),
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Close Dialog"),
-          )
-        ],
-      );
-    }
-  );
-}
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Container(
+              child: Text(error),
+            ),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Close Dialog"),
+              )
+            ],
+          );
+        });
+  }
 
   // Create a new user account
   Future<String> _createAccount() async {
@@ -41,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _registerEmail, password: _registerPassword);
       return null;
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
@@ -71,7 +69,6 @@ class _RegisterPageState extends State<RegisterPage> {
         _registerFormLoading = false;
       });
     } else {
-
       // the string was null, user is logged in, head back to login page
       Navigator.pop(context);
     }

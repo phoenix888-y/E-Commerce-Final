@@ -29,6 +29,7 @@ class ProductTab extends StatelessWidget {
 
               // Collection Data ready to display
               if (snapshot.connectionState == ConnectionState.done) {
+                print("line 31");
                 // Display the data inside a list view
                 return ListView(
                   padding: EdgeInsets.only(
